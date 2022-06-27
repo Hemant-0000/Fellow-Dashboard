@@ -1,24 +1,35 @@
-import React from 'react'
+import React from "react";
+import styles from "../styles/Home.module.css";
 import Image from 'next/image'
-import watermark from '../public/watermark.png'
+import watermark from "../public/watermark.png";
 
-function Header() {
-  return (
-    <div className='headcontainer flex flex-wrap h-[70px] bg-[#ffffff] ml-[200px] md:w-[100%] md:ml-[70px]  ' >
+function Header({ signIn, signOut, session }) {
 
-      <div className='headwrapper flex justify-evenly items-center ' >
-        <div className='title ml-[40px] '>
-          <h2 className='text-black ' >Hello, <span>Jenny</span></h2>
-          <p className='text-black' >Welcome to the board.</p>
-        </div>
-      </div>
-
-      <div className='profile absolute right-[20px] mt-[10px] md:right-[5px] '>
-        <div className='image w-[40px] h-[40px] rounded-[50%] cursor-pointer  ' ><Image src={watermark} alt='profile' /></div>
-      </div>
-
-    </div>
-  )
+	return (
+		<div className={styles.headcontainer}>
+			<div className={styles.headwrapper}>
+				<div className={styles.title}>
+					<h2>
+						Hello, <span>{session?.user.name}</span>
+					</h2>
+					<p>welcome to the board.</p>
+				</div>
+				<div className={styles.profile}>
+					{!session &&
+						<button className={styles.sigininbtn} onClick={() => signIn()}>
+							Sign In
+						</button>
+					}
+					{session &&
+						<div className={styles.image} onClick={() => signOut()}>
+							<p className={styles.username}>{session?.user.name}</p>
+							<img className={styles.imageindiv} src={session.user.image} alt="profile" />
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	);
 }
 
-export default Header
+export default Header;
